@@ -1,0 +1,53 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+	<h1 id="heading">New Post</h1>
+    <form id="post-form" action="{% url 'network:index' %}" method="post">
+    	{% csrf_token %}
+    	<textarea name="post" placeholder="Type Your Post" autofocus></textarea>
+    	<input type="hidden" name="likes" value="0">
+    	<input type="submit">
+    </form>
+    <div>
+        <h1>All Posts</h1>
+        {% for post in page_obj %}
+            <ul>
+                <li><a href="{% url 'network:profile' %}">{{ post.user }}</a></li>
+                <li class="content" name="{{ post.id }}">{{ post.content }}</li>
+                <li>{{ post.timestamp }}</li>
+                <li id="heart">&#x2665; {{ post.likes }}</li>
+                {% if post.follower == user %}
+                   <button class="unfollow" value='{{ user.id }}' name='{{post.id}}'>Unfollow</button></li>
+                   <li><button style="display:none"class="follow" name="{{post.id}}" value='{{ post.user.id }}'>Follow</button>
+                {% else %}
+                <button style="display:none" class="unfollow" value='{{ user.id }}' name='{{post.id}}'>Unfollow</button></li>
+                <li><button class="follow" name="{{post.id}}" value='{{ post.user.id }}'>Follow</button></li>
+                {% endif %}
+                {% if post.user.id == user.id %}
+                    <li><button class="edit" name="{{post.id}}" value='{{ post.user.id }}'>Edit</button></li>
+                {% endif %}
+            </ul>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'network/network.js' %}"></script>
+{% endblock %}

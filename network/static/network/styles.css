@@ -1,0 +1,19 @@
+body{
+	margin-left: 59px;
+}
+
+ul{
+	border: 1px solid black; 
+	max-width: 300px;
+}
+
+li{
+	list-style-type:none
+}
+
+#heart{
+	color:red;
+}
+button{
+	width: 100px;
+}

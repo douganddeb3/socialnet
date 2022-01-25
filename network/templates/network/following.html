@@ -1,0 +1,21 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h1>Following</h1>
+<h3>Followers {{ followers }}   Following {{ following }}</h3>
+{% if posts %}
+	{% for post in posts %}
+	    <ul>
+			<li><a href="{% url 'network:profile' %}">{{ post.user }}</a></li>
+			<li>{{ post.content }}</li>
+			<li>{{ post.timestamp }}</li>
+			<button class="like" value='{{ post.id}}'>Like<span style="color:red"> &#x2665;&nbsp;</span>                      <span class='{{post.id}}'>{{post.likes}}</span></button>
+			<button class="unlike" value='{{ post.id}}'>Unlike</button>
+		</ul>
+	{% endfor %}
+{% endif %}
+{% endblock %}
+{% block script %}
+    <script src="{% static 'network/network.js' %}"></script>
+{% endblock %}
